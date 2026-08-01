@@ -1,0 +1,32 @@
+{
+  "name": "rcic",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c blue,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run dev -w @rcic/server",
+    "dev:web": "npm run dev -w @rcic/web",
+    "build": "npm run build -w @rcic/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run tests/race-sync.test.ts packages/shared/src/index.test.ts",
+    "test:race": "vitest run tests/race-sync.test.ts tests/race-ws.test.ts packages/shared/src/index.test.ts",
+    "test:load": "vitest run tests/load-ws.test.ts",
+    "test:smoke": "node scripts/smoke-sync.mjs",
+    "test:all": "vitest run"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4",
+    "typescript": "^7.0.2",
+    "vitest": "^3.2.4",
+    "ws": "^8.21.1",
+    "y-websocket": "^3.0.0",
+    "yjs": "^13.6.31"
+  },
+  "dependencies": {
+    "firebase": "^12.17.0"
+  }
+}

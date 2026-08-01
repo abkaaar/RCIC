@@ -1,0 +1,35 @@
+# RCIC — web (nginx) + sync server. Persistence: named volume for Yjs room snapshots.
+# Usage: docker compose up --build
+# Open http://localhost
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    environment:
+      PORT: "1234"
+      DATA_DIR: /data/rooms
+    volumes:
+      - rcic-data:/data
+    ports:
+      - "1234:1234"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:1234/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      server:
+        condition: service_healthy
+
+volumes:
+  rcic-data:
