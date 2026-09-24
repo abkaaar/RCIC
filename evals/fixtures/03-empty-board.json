@@ -1,0 +1,13 @@
+{
+  "id": "03-empty-board",
+  "name": "Empty board — agent must not invent work",
+  "challenging": false,
+  "board": { "objects": [] },
+  "gold": {
+    "expectedClusters": [],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 0,
+    "mustHaveSections": false,
+    "allowEmptyHandoff": true
+  }
+}

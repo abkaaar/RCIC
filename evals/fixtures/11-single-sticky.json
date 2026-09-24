@@ -1,0 +1,16 @@
+{
+  "id": "11-single-sticky",
+  "name": "Single sticky board",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "one", "type": "sticky", "x": 200, "y": 200, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "TODO: Schedule retro" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["Process"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

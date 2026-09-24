@@ -1,0 +1,19 @@
+{
+  "id": "05-conflicting-labels",
+  "name": "Same sticky could be UI or Process",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "c1", "type": "sticky", "x": 100, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Button labels confuse new facilitators" } },
+      { "id": "c2", "type": "sticky", "x": 300, "y": 120, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Facilitator onboarding checklist" } },
+      { "id": "c3", "type": "sticky", "x": 500, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Fix: rename Invite to Share link" } },
+      { "id": "c4", "type": "sticky", "x": 200, "y": 320, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Latency spikes when 8 peers join" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Process", "Performance"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

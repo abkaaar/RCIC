@@ -1,0 +1,21 @@
+{
+  "id": "02-near-duplicates",
+  "name": "Near-duplicate stickies from parallel typing",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "d1", "type": "sticky", "x": 100, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "dark mode" } },
+      { "id": "d2", "type": "sticky", "x": 300, "y": 110, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Dark Mode" } },
+      { "id": "d3", "type": "sticky", "x": 500, "y": 90, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Dark Mode please" } },
+      { "id": "d4", "type": "sticky", "x": 120, "y": 320, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "SSO login" } },
+      { "id": "d5", "type": "sticky", "x": 320, "y": 340, "w": 180, "h": 180, "rotation": 0, "z": 5, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "SSO Login!" } },
+      { "id": "d6", "type": "sticky", "x": 520, "y": 300, "w": 180, "h": 180, "rotation": 0, "z": 6, "color": "#fdffb6", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Action: Document SSO rollout" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Backend", "Process"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

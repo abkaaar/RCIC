@@ -1,0 +1,2 @@
+{"t":1788012876928,"agent":"baseline","kind":"instruction","message":"One-shot baseline: dump all sticky texts into a single \"All Ideas\" section. Extract action items only if text starts with TODO:/Action:/AI:/Fix:/Ship:. No dedupe. No verification."}
+{"t":1788012876928,"agent":"baseline","kind":"final","output":{"fixtureId":"03-empty-board","generatedAt":"2026-08-29T14:14:36.928Z","agent":"baseline","sections":[],"actionItems":[],"archivedDuplicateIds":[],"summary":"Empty board — no structuring performed."}}

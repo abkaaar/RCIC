@@ -1,0 +1,11 @@
+{"t":1788012876956,"agent":"advanced","kind":"instruction","message":"Advanced agent: snapshot → dedupe → groupIntoSections → exportHandoff → verify; retry once if verify fails. Sandbox archives duplicates. Live consequential writes need --approve."}
+{"t":1788012876957,"agent":"advanced","kind":"tool_call","name":"getBoardSnapshot","input":{}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_result","name":"getBoardSnapshot","output":{"stickyCount":5,"sectionTitles":[],"themes":["UI","UI","UI","Risk","UI"]}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_call","name":"dedupeNearDuplicates","input":{"sandbox":true}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_result","name":"dedupeNearDuplicates","output":{"archivedIds":["p2","p3"],"keptIds":["p1","p4","p5"]}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_call","name":"groupIntoSections","input":{}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_result","name":"groupIntoSections","output":{"titles":["UI","Risk"]}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_call","name":"exportHandoff","input":{"agent":"advanced","fixtureId":"09-punctuation-dupes"}}
+{"t":1788012876957,"agent":"advanced","kind":"tool_result","name":"exportHandoff","output":{"sections":["UI","Risk"],"actionItems":2,"archived":2,"summary":"Structured 3 stickies into 2 section(s); 2 action item(s); 2 duplicate(s) archived."}}
+{"t":1788012876957,"agent":"advanced","kind":"verify","name":"verifyHandoff","output":{"ok":true,"checks":[{"name":"export_schema","pass":true,"detail":"handoff JSON shape ok"},{"name":"no_near_duplicates","pass":true,"detail":"no active near-duplicates"},{"name":"has_sections","pass":true,"detail":"boardSections=2 handoffSections=2"},{"name":"summary_nonempty","pass":true,"detail":"Structured 3 stickies into 2 section(s); 2 action item(s); 2 duplicate(s) archived."}]}}
+{"t":1788012876957,"agent":"advanced","kind":"final","output":{"summary":"Structured 3 stickies into 2 section(s); 2 action item(s); 2 duplicate(s) archived.","clusters":["UI","Risk"],"verifyOk":true,"glossarySize":8}}

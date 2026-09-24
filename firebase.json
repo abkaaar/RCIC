@@ -1,0 +1,44 @@
+{
+  "hosting": {
+    "public": "apps/web/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/health",
+        "run": {
+          "serviceId": "rcic-server",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/rooms",
+        "run": {
+          "serviceId": "rcic-server",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/yjs",
+        "run": {
+          "serviceId": "rcic-server",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/yjs/**",
+        "run": {
+          "serviceId": "rcic-server",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

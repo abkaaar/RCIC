@@ -34,6 +34,7 @@ import { SectionTitleEditor } from './ui/SectionTitleEditor'
 import { TextEditor } from './ui/TextEditor'
 import { ReplayBar } from './ui/ReplayBar'
 import { JoinModal } from './ui/JoinModal'
+import { AiPanel } from './ui/AiPanel'
 import { InkToolbar } from './ui/InkToolbar'
 import type { ConnState, Peer, Toast } from './ui/types'
 
@@ -113,6 +114,7 @@ export function Room({
   const [replay, setReplayState] = useState<ReplayState | null>(null)
   const [toasts, setToasts] = useState<Toast[]>([])
   const [commentsOpen, setCommentsOpen] = useState(false)
+  const [aiOpen, setAiOpen] = useState(false)
   const [commentDraftId, setCommentDraftId] = useState<string | null>(null)
   const [commentEditMode, setCommentEditMode] = useState<'create' | 'edit'>('create')
   const [comments, setComments] = useState<CanvasObject[]>([])
@@ -1225,6 +1227,8 @@ export function Room({
               physicsOn={physicsOn}
               isOwner={isOwner}
               votingActive={votingActive}
+              aiOpen={aiOpen}
+              onToggleAi={() => setAiOpen((v) => !v)}
               onTool={(t) => {
                 setTool(t)
                 if (t !== 'shape') setShapesOpen(false)
@@ -1701,6 +1705,8 @@ export function Room({
               onClose={() => setCommentsOpen(false)}
             />
           )}
+
+          {aiOpen && !replay && identity && <AiPanel onClose={() => setAiOpen(false)} />}
 
           {recording && <div className="recording-banner">Recording audio… click the mic to finish</div>}
           {replay && <div className="replay-banner">Replaying session — editing paused</div>}

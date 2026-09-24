@@ -1,0 +1,23 @@
+{
+  "id": "10-challenging-semantic",
+  "name": "CHALLENGING: semantic near-dupes that string metrics miss",
+  "challenging": true,
+  "notes": "Revealed that Levenshtein/containment cannot merge 'faster first paint' with 'improve FCP'. Advanced agent still structures themes; residual semantic dupes are an honest failure mode.",
+  "board": {
+    "objects": [
+      { "id": "h1", "type": "sticky", "x": 80, "y": 80, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Improve FCP" } },
+      { "id": "h2", "type": "sticky", "x": 280, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Faster first paint" } },
+      { "id": "h3", "type": "sticky", "x": 480, "y": 90, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Prefetch critical CSS" } },
+      { "id": "h4", "type": "sticky", "x": 100, "y": 300, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Auth feels unsafe without passwords" } },
+      { "id": "h5", "type": "sticky", "x": 300, "y": 320, "w": 180, "h": 180, "rotation": 0, "z": 5, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Anyone with the link can edit" } },
+      { "id": "h6", "type": "sticky", "x": 500, "y": 310, "w": 180, "h": 180, "rotation": 0, "z": 6, "color": "#fdffb6", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "TODO: Design room ACL model" } },
+      { "id": "h7", "type": "sticky", "x": 200, "y": 500, "w": 180, "h": 180, "rotation": 0, "z": 7, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Navbar too dense" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["Performance", "Risk", "UI", "Process"],
+    "maxDuplicateResidual": 2,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

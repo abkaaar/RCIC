@@ -1,0 +1,4 @@
+{"t":1788012876929,"agent":"advanced","kind":"instruction","message":"Advanced agent: snapshot → dedupe → groupIntoSections → exportHandoff → verify; retry once if verify fails. Sandbox archives duplicates. Live consequential writes need --approve."}
+{"t":1788012876929,"agent":"advanced","kind":"tool_call","name":"getBoardSnapshot","input":{}}
+{"t":1788012876929,"agent":"advanced","kind":"tool_result","name":"getBoardSnapshot","output":{"stickyCount":0,"sectionTitles":[],"themes":[]}}
+{"t":1788012876929,"agent":"advanced","kind":"final","output":{"fixtureId":"03-empty-board","generatedAt":"2026-08-29T14:14:36.929Z","agent":"advanced","sections":[],"actionItems":[],"archivedDuplicateIds":[],"summary":"Empty board — no structuring performed."}}

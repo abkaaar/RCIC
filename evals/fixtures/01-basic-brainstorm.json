@@ -1,0 +1,21 @@
+{
+  "id": "01-basic-brainstorm",
+  "name": "Basic brainstorm with three clear themes",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "s1", "type": "sticky", "x": 80, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Add dark mode" } },
+      { "id": "s2", "type": "sticky", "x": 280, "y": 120, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Larger tap targets on mobile" } },
+      { "id": "s3", "type": "sticky", "x": 480, "y": 90, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Cache API responses" } },
+      { "id": "s4", "type": "sticky", "x": 100, "y": 320, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Speed up board load" } },
+      { "id": "s5", "type": "sticky", "x": 300, "y": 340, "w": 180, "h": 180, "rotation": 0, "z": 5, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "TODO: Ship pagination for rooms API" } },
+      { "id": "s6", "type": "sticky", "x": 500, "y": 310, "w": 180, "h": 180, "rotation": 0, "z": 6, "color": "#fdffb6", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Add webhook retries" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Performance", "Backend"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

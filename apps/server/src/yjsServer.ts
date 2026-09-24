@@ -1,6 +1,6 @@
 /**
  * Yjs WebSocket relay — one Room (Y.Doc + awareness) per board id.
- * Debounced binary snapshots under data/rooms/ survive process restarts.
+ * Debounced binary snapshots (fs or GCS via roomStore) survive process restarts.
  * Clients speak y-protocols sync (0) and awareness (1); we never interpret object schemas here.
  */
 import { WebSocketServer, WebSocket, type RawData } from 'ws'
@@ -10,14 +10,10 @@ import * as syncProtocol from 'y-protocols/sync'
 import * as awarenessProtocol from 'y-protocols/awareness'
 import * as encoding from 'lib0/encoding'
 import * as decoding from 'lib0/decoding'
-import fs from 'node:fs'
-import path from 'node:path'
+import { loadRoomSnapshot, saveRoomSnapshot, snapshotBackend } from './roomStore'
 
 const MSG_SYNC = 0
 const MSG_AWARENESS = 1
-const DATA_DIR = process.env.DATA_DIR
-  ? path.resolve(process.env.DATA_DIR)
-  : path.join(process.cwd(), 'data', 'rooms')
 const SAVE_DEBOUNCE_MS = 3000
 
 class Room {
@@ -26,11 +22,12 @@ class Room {
   readonly conns = new Map<WebSocket, Set<number>>()
   private saveTimer: NodeJS.Timeout | null = null
   private dirty = false
+  private ready: Promise<void>
 
-  constructor(readonly name: string) {
+  private constructor(readonly name: string) {
     this.awareness = new awarenessProtocol.Awareness(this.doc)
     this.awareness.setLocalState(null)
-    this.load()
+    this.ready = this.load()
 
     this.doc.on('update', (update: Uint8Array) => {
       const enc = encoding.createEncoder()
@@ -41,41 +38,50 @@ class Room {
       this.scheduleSave()
     })
 
-    this.awareness.on('update', ({ added, updated, removed }: { added: number[]; updated: number[]; removed: number[] }, origin: unknown) => {
-      const changed = added.concat(updated, removed)
-      if (origin instanceof WebSocket || (origin && this.conns.has(origin as WebSocket))) {
-        const ids = this.conns.get(origin as WebSocket)
-        if (ids) {
-          added.forEach((id) => ids.add(id))
-          removed.forEach((id) => ids.delete(id))
+    this.awareness.on(
+      'update',
+      (
+        { added, updated, removed }: { added: number[]; updated: number[]; removed: number[] },
+        origin: unknown,
+      ) => {
+        const changed = added.concat(updated, removed)
+        if (origin instanceof WebSocket || (origin && this.conns.has(origin as WebSocket))) {
+          const ids = this.conns.get(origin as WebSocket)
+          if (ids) {
+            added.forEach((id) => ids.add(id))
+            removed.forEach((id) => ids.delete(id))
+          }
         }
-      }
-      const enc = encoding.createEncoder()
-      encoding.writeVarUint(enc, MSG_AWARENESS)
-      encoding.writeVarUint8Array(enc, awarenessProtocol.encodeAwarenessUpdate(this.awareness, changed))
-      this.broadcast(encoding.toUint8Array(enc))
-    })
+        const enc = encoding.createEncoder()
+        encoding.writeVarUint(enc, MSG_AWARENESS)
+        encoding.writeVarUint8Array(
+          enc,
+          awarenessProtocol.encodeAwarenessUpdate(this.awareness, changed),
+        )
+        this.broadcast(encoding.toUint8Array(enc))
+      },
+    )
   }
 
-  private file(): string {
-    const safe = this.name.replace(/[^a-zA-Z0-9_-]/g, '_')
-    return path.join(DATA_DIR, `${safe}.bin`)
+  static async create(name: string): Promise<Room> {
+    const room = new Room(name)
+    await room.ready
+    return room
   }
 
-  private load(): void {
+  private async load(): Promise<void> {
     try {
-      const f = this.file()
-      if (fs.existsSync(f)) Y.applyUpdate(this.doc, fs.readFileSync(f))
+      const data = await loadRoomSnapshot(this.name)
+      if (data && data.byteLength > 0) Y.applyUpdate(this.doc, data)
     } catch (err) {
       console.error(`[room ${this.name}] failed to load snapshot`, err)
     }
   }
 
-  save(): void {
+  async save(): Promise<void> {
     if (!this.dirty) return
     try {
-      fs.mkdirSync(DATA_DIR, { recursive: true })
-      fs.writeFileSync(this.file(), Y.encodeStateAsUpdate(this.doc))
+      await saveRoomSnapshot(this.name, Y.encodeStateAsUpdate(this.doc))
       this.dirty = false
     } catch (err) {
       console.error(`[room ${this.name}] failed to save snapshot`, err)
@@ -86,7 +92,7 @@ class Room {
     if (this.saveTimer) return
     this.saveTimer = setTimeout(() => {
       this.saveTimer = null
-      this.save()
+      void this.save()
     }, SAVE_DEBOUNCE_MS)
   }
 
@@ -114,7 +120,10 @@ class Room {
     if (states.size > 0) {
       const enc2 = encoding.createEncoder()
       encoding.writeVarUint(enc2, MSG_AWARENESS)
-      encoding.writeVarUint8Array(enc2, awarenessProtocol.encodeAwarenessUpdate(this.awareness, Array.from(states.keys())))
+      encoding.writeVarUint8Array(
+        enc2,
+        awarenessProtocol.encodeAwarenessUpdate(this.awareness, Array.from(states.keys())),
+      )
       ws.send(encoding.toUint8Array(enc2))
     }
   }
@@ -126,7 +135,7 @@ class Room {
     awarenessProtocol.removeAwarenessStates(this.awareness, Array.from(ids), null)
     if (this.conns.size === 0) {
       this.dirty = true
-      this.save()
+      void this.save()
     }
   }
 
@@ -155,9 +164,12 @@ class Room {
 }
 
 const rooms = new Map<string, Room>()
+/** In-flight creates so concurrent upgrades for the same room share one load. */
+const pending = new Map<string, Promise<Room>>()
 
 export function setupYjs(server: Server): void {
   const wss = new WebSocketServer({ noServer: true })
+  console.log(`[yjs] snapshot backend: ${snapshotBackend()}`)
 
   server.on('upgrade', (req, socket, head) => {
     const url = req.url ?? ''
@@ -169,18 +181,35 @@ export function setupYjs(server: Server): void {
   })
 
   wss.on('connection', (ws: WebSocket, req: IncomingMessage) => {
-    const name = decodeURIComponent((req.url ?? '').slice('/yjs/'.length).split('?')[0])
-    if (!name) {
-      ws.close()
-      return
-    }
-    let room = rooms.get(name)
-    if (!room) {
-      room = new Room(name)
-      rooms.set(name, room)
-    }
-    ws.binaryType = 'arraybuffer'
-    room.addConnection(ws)
+    void (async () => {
+      const name = decodeURIComponent((req.url ?? '').slice('/yjs/'.length).split('?')[0]!)
+      if (!name) {
+        ws.close()
+        return
+      }
+      let room = rooms.get(name)
+      if (!room) {
+        let creating = pending.get(name)
+        if (!creating) {
+          creating = Room.create(name).then((r) => {
+            rooms.set(name, r)
+            pending.delete(name)
+            return r
+          })
+          pending.set(name, creating)
+        }
+        try {
+          room = await creating
+        } catch (err) {
+          console.error(`[yjs] failed to open room ${name}`, err)
+          ws.close()
+          return
+        }
+      }
+      if (ws.readyState !== WebSocket.OPEN) return
+      ws.binaryType = 'arraybuffer'
+      room.addConnection(ws)
+    })()
   })
 
   // keepalive: terminate dead sockets
@@ -202,7 +231,6 @@ export function setupYjs(server: Server): void {
   wss.on('close', () => clearInterval(interval))
 
   process.on('SIGINT', () => {
-    rooms.forEach((r) => r.save())
-    process.exit(0)
+    void Promise.all([...rooms.values()].map((r) => r.save())).finally(() => process.exit(0))
   })
 }

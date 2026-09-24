@@ -9,6 +9,7 @@ import {
   Mic,
   MousePointer2,
   Plus,
+  Sparkles,
   Type,
 } from 'lucide-react'
 import type { Tool } from '../canvas/CanvasApp'
@@ -62,6 +63,8 @@ export function Toolbar(props: {
   onVotingStop(): void
   onVotingReset(): void
   onReaction(emoji: string): void
+  aiOpen?: boolean
+  onToggleAi?(): void
 }) {
   const [plusOpen, setPlusOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -161,6 +164,11 @@ export function Toolbar(props: {
         >
           <MessageCircle size={18} />
         </ToolButton>
+        {props.onToggleAi && (
+          <ToolButton active={!!props.aiOpen} title="AI assist (preview)" onClick={props.onToggleAi}>
+            <Sparkles size={18} />
+          </ToolButton>
+        )}
 
         <div className="toolbar-divider" />
 

@@ -1,0 +1,35 @@
+{
+  "id": "06-large-board",
+  "name": "Larger noisy board (~20 stickies)",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "l1", "type": "sticky", "x": 0, "y": 0, "w": 160, "h": 160, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Keyboard shortcuts" } },
+      { "id": "l2", "type": "sticky", "x": 180, "y": 0, "w": 160, "h": 160, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "keyboard shortcuts" } },
+      { "id": "l3", "type": "sticky", "x": 360, "y": 0, "w": 160, "h": 160, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Toolbar declutter" } },
+      { "id": "l4", "type": "sticky", "x": 540, "y": 0, "w": 160, "h": 160, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Reduce JS bundle" } },
+      { "id": "l5", "type": "sticky", "x": 720, "y": 0, "w": 160, "h": 160, "rotation": 0, "z": 5, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Lazy-load Pixi textures" } },
+      { "id": "l6", "type": "sticky", "x": 0, "y": 180, "w": 160, "h": 160, "rotation": 0, "z": 6, "color": "#fdffb6", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Postgres for room metadata" } },
+      { "id": "l7", "type": "sticky", "x": 180, "y": 180, "w": 160, "h": 160, "rotation": 0, "z": 7, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Object storage for images" } },
+      { "id": "l8", "type": "sticky", "x": 360, "y": 180, "w": 160, "h": 160, "rotation": 0, "z": 8, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Risk: single Cloud Run instance" } },
+      { "id": "l9", "type": "sticky", "x": 540, "y": 180, "w": 160, "h": 160, "rotation": 0, "z": 9, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Risk: no auth on boards" } },
+      { "id": "l10", "type": "sticky", "x": 720, "y": 180, "w": 160, "h": 160, "rotation": 0, "z": 10, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Weekly facilitator office hours" } },
+      { "id": "l11", "type": "sticky", "x": 0, "y": 360, "w": 160, "h": 160, "rotation": 0, "z": 11, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "TODO: Draft security RFC" } },
+      { "id": "l12", "type": "sticky", "x": 180, "y": 360, "w": 160, "h": 160, "rotation": 0, "z": 12, "color": "#fdffb6", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "AI: Benchmark sync p95" } },
+      { "id": "l13", "type": "sticky", "x": 360, "y": 360, "w": 160, "h": 160, "rotation": 0, "z": 13, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Sticky color presets" } },
+      { "id": "l14", "type": "sticky", "x": 540, "y": 360, "w": 160, "h": 160, "rotation": 0, "z": 14, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Export PDF" } },
+      { "id": "l15", "type": "sticky", "x": 720, "y": 360, "w": 160, "h": 160, "rotation": 0, "z": 15, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Ship: rate-limit room creation" } },
+      { "id": "l16", "type": "sticky", "x": 90, "y": 540, "w": 160, "h": 160, "rotation": 0, "z": 16, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Memory leak in replay scrubber" } },
+      { "id": "l17", "type": "sticky", "x": 270, "y": 540, "w": 160, "h": 160, "rotation": 0, "z": 17, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Fix memory leak in replay" } },
+      { "id": "l18", "type": "sticky", "x": 450, "y": 540, "w": 160, "h": 160, "rotation": 0, "z": 18, "color": "#fdffb6", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Connector snap points" } },
+      { "id": "l19", "type": "sticky", "x": 630, "y": 540, "w": 160, "h": 160, "rotation": 0, "z": 19, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Process: closing circle template" } },
+      { "id": "l20", "type": "sticky", "x": 810, "y": 540, "w": 160, "h": 160, "rotation": 0, "z": 20, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Backend job for snapshot GC" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Performance", "Backend", "Risk", "Process"],
+    "maxDuplicateResidual": 1,
+    "minActionItems": 3,
+    "mustHaveSections": true
+  }
+}

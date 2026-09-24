@@ -3,3 +3,12 @@ dist/
 apps/server/data/
 *.local
 .DS_Store
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+*-debug.log
+.env.local
+.env
+evals/out/
+traces/adhoc/

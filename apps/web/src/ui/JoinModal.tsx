@@ -26,13 +26,19 @@ export function JoinModal(props: { onJoin(user: PeerUser): void; onCancel(): voi
 
   return (
     <div className="modal-backdrop" onPointerDown={(e) => e.target === e.currentTarget && props.onCancel()}>
-      <div className="floating-panel modal" role="dialog" aria-modal="true" aria-label="Join this board">
+      <div className="floating-panel modal" role="dialog" aria-modal="true" aria-label="Join this RC-board">
         <div className="modal-header">
-          <h2>Join this board</h2>
+          <div className="modal-brand-row">
+            <div className="modal-logo-c" aria-hidden>
+              C
+            </div>
+            <h2>Join this board</h2>
+          </div>
           <button type="button" className="icon-btn" title="Cancel" aria-label="Cancel" onClick={props.onCancel}>
             <X size={18} />
           </button>
         </div>
+        <p className="modal-lead">Enter RC-board as yourself so teammates can see your cursor.</p>
         <label className="modal-label">Your name</label>
         <input
           className="modal-input"

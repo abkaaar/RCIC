@@ -43,7 +43,9 @@ export function RoomChip(props: {
 
   return (
     <div className="floating-panel room-chip">
-      <div className="chip-logo" />
+      <div className="chip-logo" aria-hidden>
+        C
+      </div>
       {editing ? (
         <input
           className="chip-name-input"

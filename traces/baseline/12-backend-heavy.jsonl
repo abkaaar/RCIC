@@ -1,0 +1,5 @@
+{"t":1788012876965,"agent":"baseline","kind":"instruction","message":"One-shot baseline: dump all sticky texts into a single \"All Ideas\" section. Extract action items only if text starts with TODO:/Action:/AI:/Fix:/Ship:. No dedupe. No verification."}
+{"t":1788012876965,"agent":"baseline","kind":"tool_call","name":"naive_group","input":{"section":"All Ideas","count":6}}
+{"t":1788012876965,"agent":"baseline","kind":"tool_result","name":"naive_group","output":{"stickyIds":["b1","b2","b3","b4","b5","b6"]}}
+{"t":1788012876965,"agent":"baseline","kind":"human_checkpoint","message":"Baseline runs in sandbox; live writes would require --approve"}
+{"t":1788012876965,"agent":"baseline","kind":"final","output":{"summary":"Baseline dump of 6 stickies into All Ideas; 2 prefixed action item(s).","actions":2}}

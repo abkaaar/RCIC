@@ -1,0 +1,18 @@
+{
+  "name": "@rcic/canvasops",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "eval": "tsx src/cli.ts eval",
+    "eval:baseline": "tsx src/cli.ts eval --only baseline",
+    "eval:advanced": "tsx src/cli.ts eval --only advanced",
+    "run:baseline": "tsx src/cli.ts run --agent baseline",
+    "run:advanced": "tsx src/cli.ts run --agent advanced",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

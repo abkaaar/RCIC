@@ -1,0 +1,20 @@
+{
+  "id": "08-mixed-types",
+  "name": "Stickies plus text and an existing section",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "sec1", "type": "section", "x": 400, "y": 200, "w": 500, "h": 320, "rotation": 0, "z": 0, "color": "#94a3b8", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "title": "Parking lot" } },
+      { "id": "t1", "type": "text", "x": 100, "y": 40, "w": 260, "h": 56, "rotation": 0, "z": 1, "color": "#1f2430", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Sprint planning notes" } },
+      { "id": "m1", "type": "sticky", "x": 80, "y": 120, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Improve contrast on sticky text" } },
+      { "id": "m2", "type": "sticky", "x": 280, "y": 140, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Cache Yjs snapshots in memory" } },
+      { "id": "m3", "type": "sticky", "x": 480, "y": 130, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "TODO: Archive parking-lot items weekly" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Performance", "Process"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

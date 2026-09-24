@@ -74,7 +74,7 @@ export function EmojiPicker(props: {
         <button type="button" className="dropdown-item" onClick={props.onTogglePhysics}>
           Physics: <strong>{props.physicsOn ? 'on' : 'off'}</strong>
         </button>
-        <div className="flyout-hint">Throw objects with a flick. Select an object to make it attract or repel.</div>
+        <div className="flyout-hint">RC-board physics: flick to throw. Select for Pull or Push.</div>
       </div>
     </div>
   )

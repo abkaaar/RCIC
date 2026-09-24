@@ -1,0 +1,20 @@
+{
+  "id": "09-punctuation-dupes",
+  "name": "Duplicates that differ only by punctuation",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "p1", "type": "sticky", "x": 100, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Add comments!" } },
+      { "id": "p2", "type": "sticky", "x": 300, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Add comments" } },
+      { "id": "p3", "type": "sticky", "x": 500, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Add comments..." } },
+      { "id": "p4", "type": "sticky", "x": 200, "y": 300, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Risk: comment spam" } },
+      { "id": "p5", "type": "sticky", "x": 400, "y": 320, "w": 180, "h": 180, "rotation": 0, "z": 5, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Action: Cap comment length" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Risk", "Process"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

@@ -1,0 +1,11 @@
+{"t":1788012876936,"agent":"advanced","kind":"instruction","message":"Advanced agent: snapshot → dedupe → groupIntoSections → exportHandoff → verify; retry once if verify fails. Sandbox archives duplicates. Live consequential writes need --approve."}
+{"t":1788012876936,"agent":"advanced","kind":"tool_call","name":"getBoardSnapshot","input":{}}
+{"t":1788012876936,"agent":"advanced","kind":"tool_result","name":"getBoardSnapshot","output":{"stickyCount":4,"sectionTitles":[],"themes":["UI","Process","UI","Performance"]}}
+{"t":1788012876936,"agent":"advanced","kind":"tool_call","name":"dedupeNearDuplicates","input":{"sandbox":true}}
+{"t":1788012876936,"agent":"advanced","kind":"tool_result","name":"dedupeNearDuplicates","output":{"archivedIds":[],"keptIds":["c1","c2","c3","c4"]}}
+{"t":1788012876936,"agent":"advanced","kind":"tool_call","name":"groupIntoSections","input":{}}
+{"t":1788012876937,"agent":"advanced","kind":"tool_result","name":"groupIntoSections","output":{"titles":["UI","Process","Performance"]}}
+{"t":1788012876937,"agent":"advanced","kind":"tool_call","name":"exportHandoff","input":{"agent":"advanced","fixtureId":"05-conflicting-labels"}}
+{"t":1788012876937,"agent":"advanced","kind":"tool_result","name":"exportHandoff","output":{"sections":["UI","Process","Performance"],"actionItems":1,"archived":0,"summary":"Structured 4 stickies into 3 section(s); 1 action item(s); 0 duplicate(s) archived."}}
+{"t":1788012876937,"agent":"advanced","kind":"verify","name":"verifyHandoff","output":{"ok":true,"checks":[{"name":"export_schema","pass":true,"detail":"handoff JSON shape ok"},{"name":"no_near_duplicates","pass":true,"detail":"no active near-duplicates"},{"name":"has_sections","pass":true,"detail":"boardSections=3 handoffSections=3"},{"name":"summary_nonempty","pass":true,"detail":"Structured 4 stickies into 3 section(s); 1 action item(s); 0 duplicate(s) archived."}]}}
+{"t":1788012876937,"agent":"advanced","kind":"final","output":{"summary":"Structured 4 stickies into 3 section(s); 1 action item(s); 0 duplicate(s) archived.","clusters":["UI","Process","Performance"],"verifyOk":true,"glossarySize":7}}

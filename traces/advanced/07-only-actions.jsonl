@@ -1,0 +1,11 @@
+{"t":1788012876950,"agent":"advanced","kind":"instruction","message":"Advanced agent: snapshot → dedupe → groupIntoSections → exportHandoff → verify; retry once if verify fails. Sandbox archives duplicates. Live consequential writes need --approve."}
+{"t":1788012876950,"agent":"advanced","kind":"tool_call","name":"getBoardSnapshot","input":{}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_result","name":"getBoardSnapshot","output":{"stickyCount":4,"sectionTitles":[],"themes":["Backend","Process","Process","Backend"]}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_call","name":"dedupeNearDuplicates","input":{"sandbox":true}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_result","name":"dedupeNearDuplicates","output":{"archivedIds":[],"keptIds":["o1","o2","o3","o4"]}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_call","name":"groupIntoSections","input":{}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_result","name":"groupIntoSections","output":{"titles":["Backend","Process"]}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_call","name":"exportHandoff","input":{"agent":"advanced","fixtureId":"07-only-actions"}}
+{"t":1788012876950,"agent":"advanced","kind":"tool_result","name":"exportHandoff","output":{"sections":["Backend","Process"],"actionItems":4,"archived":0,"summary":"Structured 4 stickies into 2 section(s); 4 action item(s); 0 duplicate(s) archived."}}
+{"t":1788012876950,"agent":"advanced","kind":"verify","name":"verifyHandoff","output":{"ok":true,"checks":[{"name":"export_schema","pass":true,"detail":"handoff JSON shape ok"},{"name":"no_near_duplicates","pass":true,"detail":"no active near-duplicates"},{"name":"has_sections","pass":true,"detail":"boardSections=2 handoffSections=2"},{"name":"summary_nonempty","pass":true,"detail":"Structured 4 stickies into 2 section(s); 4 action item(s); 0 duplicate(s) archived."}]}}
+{"t":1788012876951,"agent":"advanced","kind":"final","output":{"summary":"Structured 4 stickies into 2 section(s); 4 action item(s); 0 duplicate(s) archived.","clusters":["Backend","Process"],"verifyOk":true,"glossarySize":6}}

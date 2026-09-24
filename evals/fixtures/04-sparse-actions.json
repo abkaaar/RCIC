@@ -1,0 +1,20 @@
+{
+  "id": "04-sparse-actions",
+  "name": "Many ideas but few explicit action items",
+  "challenging": false,
+  "board": {
+    "objects": [
+      { "id": "a1", "type": "sticky", "x": 80, "y": 80, "w": 180, "h": 180, "rotation": 0, "z": 1, "color": "#ffd166", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Users like the radar minimap" } },
+      { "id": "a2", "type": "sticky", "x": 280, "y": 100, "w": 180, "h": 180, "rotation": 0, "z": 2, "color": "#ffadad", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Physics feels playful" } },
+      { "id": "a3", "type": "sticky", "x": 480, "y": 90, "w": 180, "h": 180, "rotation": 0, "z": 3, "color": "#a0c4ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Offline sync is a differentiator" } },
+      { "id": "a4", "type": "sticky", "x": 100, "y": 300, "w": 180, "h": 180, "rotation": 0, "z": 4, "color": "#b9fbc0", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "Maybe pricing page later" } },
+      { "id": "a5", "type": "sticky", "x": 300, "y": 320, "w": 180, "h": 180, "rotation": 0, "z": 5, "color": "#ffc6ff", "physics": { "enabled": false, "mode": "normal", "mass": 1 }, "data": { "text": "TODO: Interview 5 facilitators" } }
+    ]
+  },
+  "gold": {
+    "expectedClusters": ["UI", "Process"],
+    "maxDuplicateResidual": 0,
+    "minActionItems": 1,
+    "mustHaveSections": true
+  }
+}

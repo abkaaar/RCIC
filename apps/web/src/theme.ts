@@ -1,20 +1,22 @@
 /**
  * theme — personal accent color (localStorage). Not synced to collaborators.
+ * Default matches RC-board brand teal (enterprise, non-purple).
  */
 export const ACCENT_COLORS = [
-  '#7c5cff', // purple (default)
+  '#0f766e', // teal (RC-board default)
+  '#0369a1', // deep blue
+  '#1e3a5f', // slate navy
   '#e11d48', // rose
   '#f59e0b', // amber
   '#16a34a', // green
   '#0ea5e9', // sky
-  '#d946ef', // fuchsia
-  '#0d9488', // teal
+  '#7c5cff', // violet (optional personal accent)
 ] as const
 
 export type AccentColor = (typeof ACCENT_COLORS)[number]
 
 const STORAGE_KEY = 'rcic-accent'
-export const DEFAULT_ACCENT: AccentColor = '#7c5cff'
+export const DEFAULT_ACCENT: AccentColor = '#0f766e'
 
 const listeners = new Set<(color: string) => void>()
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^11.3.0",
+    "@google-cloud/storage": "^7.21.0",
     "@rcic/shared": "*",
     "fastify": "^5.10.0",
     "lib0": "^0.2.117",

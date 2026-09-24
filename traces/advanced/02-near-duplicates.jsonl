@@ -1,0 +1,11 @@
+{"t":1788012876927,"agent":"advanced","kind":"instruction","message":"Advanced agent: snapshot → dedupe → groupIntoSections → exportHandoff → verify; retry once if verify fails. Sandbox archives duplicates. Live consequential writes need --approve."}
+{"t":1788012876927,"agent":"advanced","kind":"tool_call","name":"getBoardSnapshot","input":{}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_result","name":"getBoardSnapshot","output":{"stickyCount":6,"sectionTitles":[],"themes":["UI","UI","UI","Backend","Backend","Backend"]}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_call","name":"dedupeNearDuplicates","input":{"sandbox":true}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_result","name":"dedupeNearDuplicates","output":{"archivedIds":["d2","d3","d5"],"keptIds":["d1","d4","d6"]}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_call","name":"groupIntoSections","input":{}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_result","name":"groupIntoSections","output":{"titles":["UI","Backend"]}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_call","name":"exportHandoff","input":{"agent":"advanced","fixtureId":"02-near-duplicates"}}
+{"t":1788012876927,"agent":"advanced","kind":"tool_result","name":"exportHandoff","output":{"sections":["UI","Backend"],"actionItems":1,"archived":3,"summary":"Structured 3 stickies into 2 section(s); 1 action item(s); 3 duplicate(s) archived."}}
+{"t":1788012876927,"agent":"advanced","kind":"verify","name":"verifyHandoff","output":{"ok":true,"checks":[{"name":"export_schema","pass":true,"detail":"handoff JSON shape ok"},{"name":"no_near_duplicates","pass":true,"detail":"no active near-duplicates"},{"name":"has_sections","pass":true,"detail":"boardSections=2 handoffSections=2"},{"name":"summary_nonempty","pass":true,"detail":"Structured 3 stickies into 2 section(s); 1 action item(s); 3 duplicate(s) archived."}]}}
+{"t":1788012876927,"agent":"advanced","kind":"final","output":{"summary":"Structured 3 stickies into 2 section(s); 1 action item(s); 3 duplicate(s) archived.","clusters":["UI","Backend"],"verifyOk":true,"glossarySize":11}}
