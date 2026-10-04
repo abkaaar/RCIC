@@ -3,15 +3,14 @@
  * Open boards stay mounted (hidden when inactive) so tab switches stay seamless (ISS-011).
  */
 import { useCallback, useEffect, useState } from 'react'
+import { RequireAuth } from './auth/RequireAuth'
 import { Landing } from './Landing'
+import { navigate } from './navigate'
 import { Room } from './Room'
 import { loadBoardTabs, removeBoardTab, renameBoardTab, upsertBoardTab, type BoardTab } from './boardTabs'
 import { BoardTabStrip } from './ui/BoardTabStrip'
 
-export function navigate(path: string): void {
-  history.pushState(null, '', path)
-  window.dispatchEvent(new PopStateEvent('popstate'))
-}
+export { navigate }
 
 export function App() {
   const [path, setPath] = useState(location.pathname)
@@ -95,13 +94,15 @@ export function App() {
                 zIndex: isActive ? 1 : 0,
               }}
             >
-              <Room
-                roomId={t.roomId}
-                active={isActive}
-                onRoomName={onRoomName}
-                onCreateBoard={onCreateBoard}
-                onCancelJoin={() => onCloseTab(t.roomId)}
-              />
+              <RequireAuth>
+                <Room
+                  roomId={t.roomId}
+                  active={isActive}
+                  onRoomName={onRoomName}
+                  onCreateBoard={onCreateBoard}
+                  onCancelJoin={() => onCloseTab(t.roomId)}
+                />
+              </RequireAuth>
             </div>
           )
         })}

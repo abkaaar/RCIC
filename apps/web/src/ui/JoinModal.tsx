@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
 import { randomName, USER_COLORS, type PeerUser } from '@rcic/shared'
+import { useAuth } from '../auth/AuthProvider'
 
 function initials(name: string): string {
   return name
@@ -13,8 +14,14 @@ function initials(name: string): string {
 }
 
 export function JoinModal(props: { onJoin(user: PeerUser): void; onCancel(): void }) {
-  const [name, setName] = useState(randomName())
+  const { user } = useAuth()
+  const googleName = user?.displayName?.trim() || ''
+  const [name, setName] = useState(() => googleName.slice(0, 24) || randomName())
   const [color, setColor] = useState(USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)])
+
+  useEffect(() => {
+    if (googleName) setName(googleName.slice(0, 24))
+  }, [googleName])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -38,7 +45,11 @@ export function JoinModal(props: { onJoin(user: PeerUser): void; onCancel(): voi
             <X size={18} />
           </button>
         </div>
-        <p className="modal-lead">Enter RC-board as yourself so teammates can see your cursor.</p>
+        <p className="modal-lead">
+          {user?.email
+            ? `Signed in as ${user.email}. Choose how teammates see your cursor on RC-board.`
+            : 'Enter RC-board as yourself so teammates can see your cursor.'}
+        </p>
         <label className="modal-label">Your name</label>
         <input
           className="modal-input"

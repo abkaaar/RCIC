@@ -16,11 +16,40 @@ Primary result (deterministic, no API keys): advanced task success **1.000** vs 
 
 ![RCIC architecture](docs/architecture.jpg)
 
+## Auth + Firestore (Google sign-in)
+
+**Project:** `rc-board-b63dc` (see [`.firebaserc`](.firebaserc))
+
+- **Auth:** Google sign-in only (Firebase Auth)
+- **Create board:** Google required; Yjs server (`POST /rooms`) must be up; Firestore stores board metadata
+- **Invite join:** Google required too (invitee signs in, then JoinModal for name/cursor); `memberIds` updated in Firestore
+- **Canvas sync:** Yjs WebSocket — already realtime for shapes/cursors (not Firestore)
+- **Board metadata:** Firestore `onSnapshot` — board list, titles, and membership update live (usually under a second)
+
+### Local env
+
+```bash
+cp apps/web/.env.example apps/web/.env.local
+# Fill VITE_FIREBASE_* from Firebase Console → Project settings → Your apps
+npm run dev   # starts web + Yjs server together
+```
+
+If you see **“Failed to get document because the client is offline”**, the Firestore database usually does not exist yet for this project (step 3 below).
+
+### Firebase Console checklist
+
+1. Enable **Authentication → Sign-in method → Google**
+2. Add authorized domains: `localhost` and your Hosting domain
+3. **Create a Firestore database** (Build → Firestore Database → Create) — required or the client stays “offline”
+4. Deploy rules: `firebase deploy --only firestore:rules`
+
+Both creating a board and opening an invite link require Google sign-in. The landing page shows a warning when the Yjs sync server is unreachable.
+
 ## Deploy on Firebase (Hosting + Cloud Run)
 
 The UI is served by **Firebase Hosting**. The Yjs WebSocket sync server runs on **Cloud Run** (Hosting alone cannot keep long-lived sockets). Room snapshots go to **Cloud Storage** when `GCS_BUCKET` is set.
 
-**Project:** `quiz-manager-f9c45` · **Region:** `europe-west1` · **URL:** https://quiz-manager-f9c45.web.app
+**Project:** `rc-board-b63dc` · **Region:** `europe-west1`
 
 ### One-time setup
 
@@ -32,8 +61,9 @@ On Windows (PowerShell):
 winget install -e --id Google.CloudSDK
 # Close this terminal and open a new one so PATH picks up gcloud
 gcloud auth login
-gcloud config set project quiz-manager-f9c45
+gcloud config set project rc-board-b63dc
 firebase login
+firebase use rc-board-b63dc
 ```
 
 2. Enable APIs and create the snapshot bucket:
@@ -41,15 +71,15 @@ firebase login
 ```bash
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com storage.googleapis.com
 
-gcloud storage buckets create gs://quiz-manager-f9c45-rcic-rooms \
-  --project=quiz-manager-f9c45 \
+gcloud storage buckets create gs://rc-board-b63dc-rcic-rooms \
+  --project=rc-board-b63dc \
   --location=europe-west1
 ```
 
-3. Grant the Cloud Run runtime service account access to the bucket (replace `PROJECT_NUMBER` from `gcloud projects describe quiz-manager-f9c45 --format="value(projectNumber)"`):
+3. Grant the Cloud Run runtime service account access to the bucket (replace `PROJECT_NUMBER` from `gcloud projects describe rc-board-b63dc --format="value(projectNumber)"`):
 
 ```bash
-gcloud storage buckets add-iam-policy-binding gs://quiz-manager-f9c45-rcic-rooms \
+gcloud storage buckets add-iam-policy-binding gs://rc-board-b63dc-rcic-rooms \
   --member="serviceAccount:PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
   --role="roles/storage.objectAdmin"
 ```
@@ -59,11 +89,11 @@ gcloud storage buckets add-iam-policy-binding gs://quiz-manager-f9c45-rcic-rooms
 ```bash
 npm install
 npm run deploy:server    # Cloud Run: rcic-server (max 1 instance)
-npm run deploy:hosting   # build Vite app + firebase deploy --only hosting
-# or: npm run deploy     # server then hosting
+firebase deploy --only firestore:rules,hosting
+# or: npm run deploy:hosting after build
 ```
 
-Hosting rewrites `/health`, `/rooms`, and `/yjs/**` to Cloud Run, so the client keeps same-origin API/WS URLs (no `VITE_*` required for production).
+Hosting rewrites `/health`, `/rooms`, and `/yjs/**` to Cloud Run. Firebase web config still needs `VITE_FIREBASE_*` at build time.
 
 | | |
 |---|---|

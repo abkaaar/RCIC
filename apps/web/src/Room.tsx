@@ -33,9 +33,12 @@ import { CommentsPanel } from './ui/CommentsPanel'
 import { SectionTitleEditor } from './ui/SectionTitleEditor'
 import { TextEditor } from './ui/TextEditor'
 import { ReplayBar } from './ui/ReplayBar'
+import { useAuth } from './auth/AuthProvider'
+import { ensureBoardMember, subscribeBoard, updateBoardName } from './firebase/boards'
 import { JoinModal } from './ui/JoinModal'
 import { AiPanel } from './ui/AiPanel'
 import { InkToolbar } from './ui/InkToolbar'
+import { navigate } from './navigate'
 import type { ConnState, Peer, Toast } from './ui/types'
 
 const IDENTITY_KEY = 'rcic-identity'
@@ -81,7 +84,11 @@ export function Room({
   onCreateBoard?(roomId: string, newBrowserTab: boolean): void
   onCancelJoin?(): void
 }) {
+  const { user: authUser, signOut: firebaseSignOut } = useAuth()
   const [identity, setIdentity] = useState<PeerUser | null>(loadIdentity)
+  const [boardMemberCount, setBoardMemberCount] = useState<number | undefined>(undefined)
+  const lastSyncedNameRef = useRef<string | null>(null)
+  const nameSyncTimerRef = useRef<number | null>(null)
   const hostRef = useRef<HTMLDivElement>(null)
   const sessionRef = useRef<Session | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -1057,6 +1064,10 @@ export function Room({
     setIdentity(user)
     // Other mounted Rooms listen so they can init without remounting (ISS-011)
     window.dispatchEvent(new CustomEvent('rcic-identity', { detail: user }))
+    void ensureBoardMember(roomId).catch((err) => {
+      console.warn('board membership', err)
+      pushToast(err instanceof Error ? err.message : 'Could not sync board membership')
+    })
   }
 
   const onLogout = () => {
@@ -1069,7 +1080,47 @@ export function Room({
     setIdentity(null)
     setReady(false)
     window.dispatchEvent(new Event('rcic-identity-clear'))
+    void firebaseSignOut().finally(() => navigate('/'))
   }
+
+  // Returning users with saved canvas identity still need Firestore membership.
+  useEffect(() => {
+    if (!identity) return
+    void ensureBoardMember(roomId).catch((err) => {
+      console.warn('board membership', err)
+      pushToast(err instanceof Error ? err.message : 'Could not sync board membership')
+    })
+  }, [roomId, identity, pushToast])
+
+  // Realtime Firestore board metadata (membership + name list sync).
+  useEffect(() => {
+    if (!authUser) {
+      setBoardMemberCount(undefined)
+      return
+    }
+    return subscribeBoard(roomId, (board) => {
+      if (!board) return
+      setBoardMemberCount(board.memberIds.length)
+      lastSyncedNameRef.current = board.name
+      onRoomNameRef.current?.(roomId, board.name)
+    })
+  }, [roomId, authUser])
+
+  /** Debounced write-through of Yjs title → Firestore. */
+  const syncBoardName = useCallback((name: string) => {
+    if (lastSyncedNameRef.current === name) return
+    if (nameSyncTimerRef.current) window.clearTimeout(nameSyncTimerRef.current)
+    nameSyncTimerRef.current = window.setTimeout(() => {
+      lastSyncedNameRef.current = name
+      void updateBoardName(roomId, name)
+    }, 350)
+  }, [roomId])
+
+  useEffect(() => {
+    return () => {
+      if (nameSyncTimerRef.current) window.clearTimeout(nameSyncTimerRef.current)
+    }
+  }, [roomId])
 
   const onImagePicked = async (file: File) => {
     const s = sessionRef.current
@@ -1198,14 +1249,27 @@ export function Room({
           <RoomChip
             name={roomName}
             conn={conn}
-            onRename={(name) => withSession((s) => s.store.doc.transact(() => s.store.meta.set('name', name), 'rcic-ui'))}
+            onRename={(name) => {
+              withSession((s) => s.store.doc.transact(() => s.store.meta.set('name', name), 'rcic-ui'))
+              syncBoardName(name)
+            }}
             onCreateBoard={onCreateBoard}
           />
 
           <TopRightBar
             self={identity}
+            account={
+              authUser
+                ? {
+                    displayName: authUser.displayName,
+                    email: authUser.email,
+                    photoURL: authUser.photoURL,
+                  }
+                : null
+            }
             peers={peers}
             createdAt={createdAt}
+            memberCount={boardMemberCount}
             onReplay={openReplay}
             onExport={onExport}
             onLogout={onLogout}

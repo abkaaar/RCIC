@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { Check, Link, Plus } from 'lucide-react'
 import { createRoomId } from '../api'
+import { useAuth } from '../auth/AuthProvider'
+import { createBoardMeta } from '../firebase/boards'
 import type { ConnState } from './types'
 
 const STATUS: Record<ConnState, { label: string; className: string }> = {
@@ -17,6 +19,7 @@ export function RoomChip(props: {
   /** App updates tab strip then navigates (or opens a browser tab). */
   onCreateBoard?(roomId: string, newBrowserTab: boolean): void
 }) {
+  const { requireAuth } = useAuth()
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(props.name)
   const [copied, setCopied] = useState(false)
@@ -34,8 +37,17 @@ export function RoomChip(props: {
     if (creating || !props.onCreateBoard) return
     setCreating(true)
     try {
-      const roomId = await createRoomId()
+      await requireAuth()
+      const roomId = await createRoomId({ requireServer: true })
+      try {
+        await createBoardMeta(roomId)
+      } catch (metaErr) {
+        console.warn('board meta', metaErr)
+      }
       props.onCreateBoard(roomId, e.shiftKey)
+    } catch (err) {
+      console.error(err)
+      window.alert(err instanceof Error ? err.message : 'Could not create board')
     } finally {
       setCreating(false)
     }

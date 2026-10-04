@@ -277,6 +277,11 @@ textarea {
   gap: 10px;
   padding: 6px 8px;
   z-index: 20;
+  overflow: visible;
+}
+
+.top-right-bar .menu-anchor {
+  overflow: visible;
 }
 
 .avatar-stack {
@@ -412,32 +417,67 @@ textarea {
 }
 
 .identity-dropdown {
-  width: 220px;
+  width: 260px;
+  max-width: min(260px, calc(100vw - 24px));
   padding: 10px;
   right: auto;
   left: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-sizing: border-box;
 }
 
 .identity-you {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   padding: 6px 4px 8px;
+  min-width: 0;
 }
 
-.identity-you .avatar {
+.identity-you > div:last-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.identity-you .avatar,
+.identity-you .avatar-photo {
+  width: 28px;
+  height: 28px;
   margin-left: 0;
   flex: none;
+  object-fit: cover;
 }
 
 .identity-name {
   font-size: 13px;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .identity-role {
   font-size: 11px;
   color: var(--ink-soft);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+.identity-dropdown .color-row,
+.identity-dropdown .accent-row {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 4px 4px;
+  max-width: 100%;
+}
+
+.identity-dropdown .accent-row .color-dot {
+  width: 22px;
+  height: 22px;
 }
 
 .identity-section-label {
@@ -2005,6 +2045,278 @@ textarea {
   font-family: inherit;
 }
 
+.landing-nav-auth-status {
+  font-size: 13px;
+  color: rgba(248, 250, 252, 0.55);
+}
+
+/* Account avatar menu (landing + shared) */
+.user-account-menu {
+  position: relative;
+  flex: none;
+}
+
+.user-account-trigger {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.user-account-trigger:hover .user-account-avatar {
+  outline: 2px solid rgba(20, 184, 166, 0.85);
+  outline-offset: 2px;
+}
+
+.user-account-avatar,
+.user-account-avatar-lg {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex: none;
+}
+
+.user-account-avatar-lg {
+  width: 28px;
+  height: 28px;
+}
+
+.user-account-avatar-fallback {
+  display: grid;
+  place-items: center;
+  background: #0f766e;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.user-account-dropdown {
+  width: 240px;
+  max-width: min(240px, calc(100vw - 24px));
+  padding: 10px;
+  right: 0;
+  left: auto;
+  z-index: 50;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.user-account-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 4px 4px 8px;
+  min-width: 0;
+}
+
+.user-account-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.user-account-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-account-email {
+  font-size: 12px;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+.user-account-menu-dark .user-account-avatar-fallback {
+  background: #14b8a6;
+}
+
+.avatar-photo-btn {
+  padding: 0;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.avatar-photo-btn .avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+img.avatar.avatar-photo {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  padding: 0;
+}
+
+.identity-member-count {
+  font-size: 11px;
+  color: var(--ink-soft);
+  padding: 0 8px 6px;
+}
+
+.landing-boards {
+  position: relative;
+  z-index: 1;
+  padding: 48px 24px 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.landing-boards-empty {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: rgba(248, 250, 252, 0.55);
+  text-align: center;
+}
+
+.landing-boards-list {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.landing-board-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(248, 250, 252, 0.1);
+  background: rgba(15, 23, 42, 0.35);
+  color: #f8fafc;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.landing-board-row:hover {
+  border-color: rgba(20, 184, 166, 0.45);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.landing-board-name {
+  font-size: 15px;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.landing-board-meta {
+  font-size: 12px;
+  color: rgba(248, 250, 252, 0.5);
+  flex: none;
+}
+
+.landing-error {
+  margin: 0 0 12px;
+  max-width: 480px;
+  font-size: 13px;
+  color: #fca5a5;
+  text-align: center;
+}
+
+.landing-warn {
+  margin: 0 0 12px;
+  max-width: 520px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #fde68a;
+  text-align: center;
+}
+
+.landing-warn code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  background: rgba(15, 23, 42, 0.35);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.auth-gate-card .landing-warn {
+  text-align: left;
+  color: #92400e;
+}
+
+.auth-gate {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(480px 280px at 20% 0%, rgba(20, 184, 166, 0.18), transparent 60%),
+    #e8eef2;
+  z-index: 5;
+}
+
+.auth-gate-card {
+  width: min(380px, 100%);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  text-align: center;
+}
+
+.auth-gate-card .modal-logo-c {
+  margin: 0 auto 4px;
+}
+
+.auth-gate-card h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.auth-gate-card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.auth-gate-card .primary-btn {
+  margin-top: 8px;
+}
+
+.auth-gate-back {
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 550;
+  cursor: pointer;
+  padding: 8px;
+  font-family: inherit;
+}
+
+.auth-gate-back:hover {
+  color: var(--ink);
+}
+
 .landing-nav-cta:disabled {
   opacity: 0.55;
   cursor: default;
@@ -2544,6 +2856,14 @@ textarea {
   }
 
   .landing-nav-links {
+    display: none;
+  }
+
+  .landing-nav-user-name {
+    display: none;
+  }
+
+  .landing-nav-signout span {
     display: none;
   }
 

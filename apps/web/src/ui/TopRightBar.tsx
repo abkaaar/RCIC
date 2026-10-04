@@ -5,6 +5,12 @@ import { USER_COLORS } from '@rcic/shared'
 import { ACCENT_COLORS, getAccent, setAccent } from '../theme'
 import type { Peer } from './types'
 
+export type AccountInfo = {
+  displayName: string | null
+  email: string | null
+  photoURL: string | null
+}
+
 function initials(name: string): string {
   return name
     .split(/\s+/)
@@ -37,8 +43,10 @@ type Menu = 'none' | 'share' | 'export' | 'settings' | 'identity'
 
 export function TopRightBar(props: {
   self: { name: string; color: string }
+  account?: AccountInfo | null
   peers: Peer[]
   createdAt: number | null
+  memberCount?: number
   onReplay(): void
   onExport(format: 'png' | 'svg' | 'json'): void
   onLogout(): void
@@ -62,29 +70,48 @@ export function TopRightBar(props: {
 
   const peerAvatars = props.peers.slice(0, 3)
   const extra = Math.max(0, props.peers.length - peerAvatars.length)
+  const account = props.account
+  const accountLabel = account?.displayName || account?.email || props.self.name
 
   return (
     <div className="floating-panel top-right-bar" ref={ref}>
       <div className="menu-anchor">
         <button
-          className="avatar avatar-self"
-          style={{ background: props.self.color }}
-          title={props.self.name}
+          className="avatar avatar-self avatar-photo-btn"
+          style={account?.photoURL ? undefined : { background: props.self.color }}
+          title={accountLabel}
           onClick={() => toggle('identity')}
         >
-          {initials(props.self.name)}
+          {account?.photoURL ? (
+            <img className="avatar-photo" src={account.photoURL} alt="" referrerPolicy="no-referrer" />
+          ) : (
+            initials(props.self.name)
+          )}
         </button>
         {menu === 'identity' && (
           <div className="floating-panel dropdown identity-dropdown">
             <div className="identity-you">
-              <div className="avatar" style={{ background: props.self.color }}>
-                {initials(props.self.name)}
-              </div>
+              {account?.photoURL ? (
+                <img className="avatar avatar-photo" src={account.photoURL} alt="" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="avatar" style={{ background: props.self.color }}>
+                  {initials(props.self.name)}
+                </div>
+              )}
               <div>
-                <div className="identity-name">{props.self.name}</div>
-                <div className="identity-role">You</div>
+                <div className="identity-name">{account?.displayName || props.self.name}</div>
+                {account?.email ? (
+                  <div className="identity-role">{account.email}</div>
+                ) : (
+                  <div className="identity-role">Canvas: {props.self.name}</div>
+                )}
               </div>
             </div>
+            {typeof props.memberCount === 'number' && (
+              <div className="identity-member-count">
+                {props.memberCount} board member{props.memberCount === 1 ? '' : 's'} · live
+              </div>
+            )}
             {props.onCursorColor && (
               <>
                 <div className="dropdown-divider" />
@@ -106,7 +133,7 @@ export function TopRightBar(props: {
             {props.peers.length > 0 && (
               <>
                 <div className="dropdown-divider" />
-                <div className="identity-section-label">Collaborators</div>
+                <div className="identity-section-label">On canvas now</div>
                 {props.peers.map((p) => (
                   <div key={p.id} className="identity-peer">
                     <span className="peer-dot" style={{ background: p.color }} />
@@ -123,7 +150,7 @@ export function TopRightBar(props: {
                 props.onLogout()
               }}
             >
-              <LogOut size={14} /> Log out
+              <LogOut size={14} /> Sign out
             </button>
           </div>
         )}
@@ -211,7 +238,7 @@ export function TopRightBar(props: {
                 {copied ? <Check size={15} /> : <Copy size={15} />}
               </button>
             </div>
-            <div className="share-hint">Anyone with the link joins this board instantly.</div>
+            <div className="share-hint">Anyone with the link signs in with Google and joins this board.</div>
           </div>
         )}
       </div>
